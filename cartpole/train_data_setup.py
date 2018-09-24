@@ -12,14 +12,16 @@ def create_train_data():
     xy = []
     for i in [v / 100.0 for v in range(25, 1200, 25)]:
         for j in [e / 100.0 for e in range(25, 10000, 25)]:
-            xy.append([np.array([0, 0, i, j]), 1])
+            xy.append([np.array([i, j]), 1])
 
 
     for i in [v / 100.0 for v in range(-25, -1200, -25)]:
         for j in [e / 100.0 for e in range(-25, -10000, -25)]:
-            xy.append([np.array([0, 0, i, j]), 0])
+            xy.append([np.array([i, j]), 0])
 
+    #print(xy[:3], end='\n\n')
     random.shuffle(xy)
+    #print(xy[:3])
 
     x = []
     y = []
@@ -27,9 +29,12 @@ def create_train_data():
         x.append(i[0])
         y.append(i[1])
 
+    x = np.array(x)
+    y = np.array(y)
 
-    print(y)
+    split = int(len(x) / 10)
+    xtrain, xtest = x[split:], x[:split]
+    ytrain, ytest = y[split:], y[:split]
 
-create_train_data()
+    return xtrain, ytrain, xtest, ytest
 
-    
