@@ -10,11 +10,11 @@ mdl = keras.models.Sequential()
 mdl.add(Dense(16, input_dim=2, activation='relu'))
 mdl.add(Dense(16, activation='sigmoid'))
 mdl.add(Dense(16, activation='sigmoid'))
-mdl.add(Dense(1, activation='softmax'))
+mdl.add(Dense(2, activation='softmax'))
 
 mdl.compile(
             optimizer='adam',
-            loss='binary_crossentropy',
+            loss='sparse_categorical_crossentropy',
             metrics=['accuracy']
            )
 
