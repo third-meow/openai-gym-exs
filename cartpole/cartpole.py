@@ -15,31 +15,32 @@ env.reset()
 fail_n = 0 
 upcycles = 0
 
-obs, total_reward, done, ifo = env.step(env.action_space.sample())
-obs = np.array([obs])
-env.render()
-
-
 def unpack(packed):
     return int(packed[0][0])
+
+
+obs, total_reward, done, ifo = env.step(env.action_space.sample())
+obs = np.array(obs[2:])
+env.render()
+
 for i in range(1000):
     while True:
         #get next step from model
-        prediction = mdl.predict(obs)
+        prediction = mdl.predict(np.array([obs]))
         nstep = unpack(prediction)
 
         #make the step, render
         obs, reward, done, ifo = env.step(nstep)
-        obs = np.array([obs])
+        obs = np.array(obs[2:])
         total_reward += reward
         env.render()
 
         #train the model on the outcome of it's previous decision
         if done:
             if nstep == 0:  
-                mdl.fit([obs], [1], epochs=7, verbose=0)
+                mdl.fit(np.array([obs]), np.array([1]), epochs=7, verbose=0)
             else:
-                mdl.fit([obs], [0], epochs=7, verbose=0)
+                mdl.fit(np.array([obs]), np.array([0]), epochs=7, verbose=0)
 
             #if done, reset and break
             print(total_reward)
@@ -49,11 +50,11 @@ for i in range(1000):
             break
 
         else:
-            mdl.fit(obs, prediction, epochs=1, verbose=0)
+            mdl.fit(np.array([obs]), np.array([nstep]), epochs=1, verbose=0)
             upcycles += 1
     
         #sleep
-        time.sleep(0.1)
+        #time.sleep(0.1)
     
 
 
