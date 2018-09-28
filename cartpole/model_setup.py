@@ -7,20 +7,23 @@ import tensorflow.keras as keras
 from tensorflow.keras.layers import Dense, Activation
 
 mdl = keras.models.Sequential()
-mdl.add(Dense(16, input_dim=2, activation='relu'))
-mdl.add(Dense(16, activation='sigmoid'))
-mdl.add(Dense(16, activation='sigmoid'))
-mdl.add(Dense(2, activation='softmax'))
+mdl.add(Dense(128, input_dim=4, activation=tf.nn.relu))
+mdl.add(Dense(128, activation=tf.nn.relu))
+mdl.add(Dense(128, activation=tf.nn.relu))
+mdl.add(Dense(1, activation=tf.nn.softmax))
 
 mdl.compile(
             optimizer='adam',
-            loss='sparse_categorical_crossentropy',
+            loss='binary_crossentropy',
             metrics=['accuracy']
            )
 
 xtrain, ytrain, xtest, ytest = create_train_data() 
 
-print(xtrain.shape)
+xtrain = keras.utils.normalize(xtrain, axis=1)
+xtest = keras.utils.normalize(xtest, axis=1)
+
+
 mdl.fit(xtrain, ytrain, epochs=8)
 print(mdl.evaluate(xtest, ytest, verbose=1))
 

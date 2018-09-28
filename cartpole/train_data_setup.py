@@ -1,31 +1,46 @@
+import gym
 import random
 import numpy as np
 
 
-# # # # # # # # # #
-#   Actions         
-#       0 = left    
-#       1 = right   
-# # # # # # # # # #
-
 def create_train_data():
-    xy = []
-    for i in [v / 100.0 for v in range(25, 1200, 25)]:
-        for j in [e / 100.0 for e in range(25, 10000, 25)]:
-            xy.append([np.array([i, j]), 1])
+    train_data = []
+
+    
+    env = gym.make('CartPole-v0')
+    env.reset()
+
+    while len(train_data) <= 7200:
+        game_data = []
+        #setup game
+        obs = env.reset()
+        prev_obs = obs
+        total_reward = 0 
+
+        #run random game, do random moves; record moves
+        while True:
+            nstep = env.action_space.sample()
+            obs, reward, done, ifo = env.step(nstep)
+            total_reward += reward
+
+            game_data.append([prev_obs, nstep])
+            prev_obs = obs
+
+            if done:
+                #if game went well
+                if total_reward > 100:
+                    # append all the 'good' moves from game data 
+                    # (except last 10, they might have lead to the fail)
+                    # to train_data
+                    for good_move in game_data[:-10]:
+                        train_data.append(good_move)
+                break
 
 
-    for i in [v / 100.0 for v in range(-25, -1200, -25)]:
-        for j in [e / 100.0 for e in range(-25, -10000, -25)]:
-            xy.append([np.array([i, j]), 0])
-
-    #print(xy[:3], end='\n\n')
-    random.shuffle(xy)
-    #print(xy[:3])
 
     x = []
     y = []
-    for i in xy:
+    for i in train_data:
         x.append(i[0])
         y.append(i[1])
 
