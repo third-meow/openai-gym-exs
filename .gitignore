@@ -9,6 +9,9 @@ __pycache__/
 # h5 files
 *.h5
 
+#pickle files
+.pickle
+
 # Distribution / packaging
 .Python
 build/

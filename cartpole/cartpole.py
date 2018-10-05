@@ -6,7 +6,7 @@ import tensorflow.keras as keras
 
 
 #load model
-mdl = keras.models.load_model('latest_model.h5')
+mdl = keras.models.load_model('saved/latest_model.h5')
 
 #create enviroment
 env = gym.make('CartPole-v0')
@@ -19,7 +19,6 @@ def unpack(packed):
 
 
 obs, total_reward, done, ifo = env.step(env.action_space.sample())
-obs = np.array(obs[2:])
 #env.render()
 
 for i in range(30000):
@@ -32,7 +31,6 @@ for i in range(30000):
 
         #make the step, render
         obs, reward, done, ifo = env.step(nstep)
-        obs = np.array(obs[2:])
         total_reward += reward
         #env.render()
 
@@ -57,6 +55,6 @@ for i in range(30000):
 
 
 #save model
-mdl.save('latest_model.h5')
+mdl.save('saved/latest_model.h5')
 #close enviroment
 env.close()
