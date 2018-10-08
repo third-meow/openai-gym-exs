@@ -10,7 +10,10 @@ __pycache__/
 *.h5
 
 #pickle files
-.pickle
+*.pickle
+
+#saved thins
+saved/
 
 # Distribution / packaging
 .Python
