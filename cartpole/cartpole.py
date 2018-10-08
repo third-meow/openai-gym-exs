@@ -14,44 +14,39 @@ env.reset()
 
 fail_n = 0 
 
+def push_to_prev(prev, new):
+    prev[2] = prev[1]
+    prev[1] = prev[0]
+    prev[0] = new
+    return prev
+
 def unpack(packed):
     return np.argmax(packed)
+
+def predict(in_data):
+    keras.utils.normalize(in_data)
 
 
 obs, total_reward, done, ifo = env.step(env.action_space.sample())
 #env.render()
 
-for i in range(30000):
+for _ in range(100):
+    obs = env.reset()
+    prev_obs = np.empty([3])
+    prev_obs = np.append(prev_obs, [obs])
+    prev_obs = np.append(prev_obs, [obs])
+    prev_obs = np.append(prev_obs, [obs])
     while True:
-        #get next step from model
-        prediction = mdl.predict(np.array([obs]))
-        nstep = unpack(prediction)
-
-        #print('{}\n{}-{}'.format(obs, prediction, nstep))
-
-        #make the step, render
-        obs, reward, done, ifo = env.step(nstep)
-        total_reward += reward
-        #env.render()
-
-        #train the model on the outcome of it's previous decision
-        if done:
-            if nstep == 0:  
-                mdl.fit(np.array([obs]), np.array([1]), epochs=7, verbose=0)
-            else:
-                mdl.fit(np.array([obs]), np.array([0]), epochs=7, verbose=0)
-
-            #if done, reset and break
-            print('='*int(total_reward))
-            total_reward = 0
-            env.reset()
-            break
-
-        else:
-            mdl.fit(np.array([obs]), np.array([nstep]), epochs=3, verbose=0)
-    
-        #sleep
-        #time.sleep(0.1)
+        print(prev_obs)
+        print(prev_obs.shape)
+        #predict step
+        nstep = mdl.predict(prev_obs)
+        print(nstep)
+        #take step
+        #record obs
+        #update prev obs
+        #if done break
+        break
 
 
 #save model
