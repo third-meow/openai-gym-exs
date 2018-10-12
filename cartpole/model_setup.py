@@ -37,6 +37,13 @@ def train_model(mdl):
 
     mdl.fit(xtrain, ytrain, batch_size=32, epochs=3, callbacks=[tensorboard])
     print(mdl.evaluate(xtest, ytest, verbose=1))
+    count = 0
+    for i in range(len(xtest)):
+        if int(mdl.predict(np.array([xtest[i]]))) == ytest[i]:
+            print(xtest[i])
+            count += 1
+            if count > 10:
+                quit()
     
     return mdl
 
