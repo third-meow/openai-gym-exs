@@ -10,10 +10,10 @@ from tensorflow.keras.callbacks import TensorBoard
 
 def build_model():
     mdl = keras.models.Sequential()
-    mdl.add(Dense(128, input_dim=12, activation=tf.nn.softplus))
-    mdl.add(Dense(128, activation=tf.nn.softplus))
-    mdl.add(Dense(128, activation=tf.nn.softplus))
-    mdl.add(Dense(128, activation=tf.nn.softplus))
+    mdl.add(Dense(64, input_dim=12, activation=tf.nn.softplus))
+    mdl.add(Dense(64, activation=tf.nn.softplus))
+    mdl.add(Dense(32, activation=tf.nn.softplus))
+    mdl.add(Dense(32, activation=tf.nn.softplus))
     mdl.add(Dense(1, activation=tf.nn.softplus))
 
     mdl.compile(
