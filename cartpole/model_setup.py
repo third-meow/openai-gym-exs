@@ -14,6 +14,7 @@ def build_model():
     mdl.add(Dense(64, activation=tf.nn.softplus))
     mdl.add(Dense(32, activation=tf.nn.softplus))
     mdl.add(Dense(32, activation=tf.nn.softplus))
+    mdl.add(Dense(1, activation=tf.nn.relu))
     mdl.add(Dense(1, activation=tf.nn.softplus))
 
     mdl.compile(
