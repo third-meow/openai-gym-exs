@@ -7,7 +7,7 @@ env = gym.make('Taxi-v2').env
 
 qtab = np.zeros([env.observation_space.n, env.action_space.n])
 
-explore_chance = 0.2
+DEFUALT_EXPLORE_CHANCE = 0.2
 explore_dropoff = 0.00001
 learnrate = 0.1
 gamma = 0.6
@@ -17,17 +17,17 @@ total_reward  = 0
 state = env.reset()
 
 
-
 def invert(x):
     return (1.0 - x)
 
+
 for i in range(1000):
-    #explore_chance += (500*explore_dropoff)
+    explore_chance = DEFUALT_EXPLORE_CHANCE 
     while True:
 
         if random.uniform(0, 1) < explore_chance:
             nstep = env.action_space.sample()
-            #explore_chance -= explore_dropoff
+            explore_chance -= explore_dropoff
         else:
             nstep = np.argmax(qtab[state])
 
@@ -51,7 +51,10 @@ for i in range(1000):
 
 
         if done:
-            print('''It: {}'s reward was: {}'''.format(i, total_reward))
+            #print('''It: {}'s reward was: {}'''.format(i, total_reward))
+            if total_reward > 15000:
+                print('Took {} epochs'.format(i))
+                quit()
             break
 
-        
+print('End total reward: {}'.format(total_reward))
