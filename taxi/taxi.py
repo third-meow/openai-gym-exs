@@ -7,10 +7,10 @@ env = gym.make('Taxi-v2').env
 
 qtab = np.zeros([env.observation_space.n, env.action_space.n])
 
-DEFUALT_EXPLORE_CHANCE = 0.2
+DEFUALT_EXPLORE_CHANCE = 0.1
 explore_dropoff = 0.00001
-learnrate = 0.1
-gamma = 0.6
+learnrate = 0.25
+gamma = 0.4
 
 
 total_reward  = 0
