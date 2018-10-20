@@ -9,7 +9,7 @@ import tensorflow.keras as keras
 mdl = keras.models.load_model('saved/latest_model.h5')
 
 #create enviroment
-env = gym.make('CartPole-v0')
+env = gym.make('CartPole-v0').env
 env.reset()
 
 failed = False 
@@ -55,6 +55,8 @@ for game_n in range(100):
                     total_reward))
                 #set fail flag
                 failed = True
+            else:
+                print(total_reward)
             break
 
 #if model sucdeeded
